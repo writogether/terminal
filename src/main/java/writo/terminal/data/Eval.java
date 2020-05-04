@@ -1,6 +1,8 @@
 package writo.terminal.data;
 
-public class Eval {
+import writo.terminal.view.View;
+
+public class Eval implements Entity {
 
     private long id;
     private long likerId;
@@ -37,6 +39,11 @@ public class Eval {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public View toView() {
+        return null;
     }
 
 }

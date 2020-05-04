@@ -1,6 +1,8 @@
 package writo.terminal.data;
 
-public class Comment {
+import writo.terminal.view.View;
+
+public class Comment implements Entity {
 
     private long id;
     private long commenterId;
@@ -37,6 +39,11 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public View toView() {
+        return null;
     }
 
 }

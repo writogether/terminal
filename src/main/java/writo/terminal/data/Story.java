@@ -1,6 +1,8 @@
 package writo.terminal.data;
 
-public class Story {
+import writo.terminal.view.View;
+
+public class Story implements Entity{
 
     private long id;
     private long fatherId;
@@ -37,6 +39,11 @@ public class Story {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public View toView() {
+        return null;
     }
 
 }

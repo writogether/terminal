@@ -2,3 +2,5 @@ writo.terminal
 writo.terminal.controller
 writo.terminal.data
 writo.terminal.mapper
+writo.terminal.util
+writo.terminal.view

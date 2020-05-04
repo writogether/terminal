@@ -19,12 +19,13 @@ set names utf8mb4;
 drop table if exists `user`;
 create table `user`
 (
-    `id`          int(11)      not null auto_increment,
-    `description` varchar(255) not null default 'default_user_description',
-    `username`    varchar(255) not null default 'default_user_username',
-    `password`    varchar(255) not null default 'default_user_password',
-    `phone`       varchar(20)  not null default '00000000000',
-    `level`       int(11)      not null default 0,
+    `id`           int(11)      not null auto_increment,
+    `description`  varchar(255) not null default 'default_user_description',
+    `username`     varchar(255) not null default 'default_user_username',
+    `password`     varchar(255) not null default 'default_user_password',
+    `phone_number` varchar(20)  not null default '00000000000',
+    `email`        varchar(255) not null default 'default@default.com',
+    `level`        int(11)      not null default 0,
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
