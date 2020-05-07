@@ -5,7 +5,7 @@ import writo.terminal.view.View;
 public class Eval implements Entity {
 
     private long id;
-    private long likerId;
+    private long userId;
     private long storyId;
     private String type;
 
@@ -17,12 +17,12 @@ public class Eval implements Entity {
         this.id = id;
     }
 
-    public long getLikerId() {
-        return likerId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setLikerId(long likerId) {
-        this.likerId = likerId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getStoryId() {

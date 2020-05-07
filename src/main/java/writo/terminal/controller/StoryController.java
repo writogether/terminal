@@ -2,21 +2,19 @@ package writo.terminal.controller;
 
 import org.springframework.web.bind.annotation.*;
 import writo.terminal.util.Res;
-import writo.terminal.view.StoryContentView;
 import writo.terminal.view.StoryView;
 
 @RestController
 @RequestMapping("/api/story")
-public class StoryController extends Base {
+public class StoryController {
 
     /**
      * Upload a story.
      *
-     * @param storyView   contains contains id, fatherId, authorId and title.
-     * @param contentView contains main content of story.
+     * @param storyView contains contains id, fatherId, authorId, title and (when view story details) content.
      */
     @PostMapping("/upload")
-    public Res upload(@RequestBody StoryView storyView, @RequestBody StoryContentView contentView) {
+    public Res upload(@RequestBody StoryView storyView) {
         return new Res(); // todo
     }
 
@@ -34,7 +32,7 @@ public class StoryController extends Base {
      * Get story content by id.
      */
     @GetMapping("/content/{id}")
-    public Res getStoryContent(@PathVariable String id) {
+    public Res getStoryContent(@PathVariable long id) {
         return null; // todo
     }
 

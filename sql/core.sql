@@ -103,7 +103,7 @@ drop table if exists `eval`;
 create table `eval`
 (
     `id`       int(11) not null auto_increment,
-    `liker_id` int(11) not null        default 0,
+    `user_id` int(11) not null        default 0,
     `story_id` int(11) not null        default 0,
     `type`     enum ('like','dislike') default 'like',
     primary key (`id`)

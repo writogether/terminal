@@ -11,7 +11,7 @@ import writo.terminal.view.UserView;
 public interface UserMapper {
 
     @Select(value = "select * from writo.user where id=#{id} ")
-    User getUserById(@Param("id") int id);
+    User getUserById(@Param("id") long id);
 
     @Select(value = "select * from writo.user where username=#{username} and password=md5(#{password})")
     User login(@Param("username") String username, @Param("password") String password);
