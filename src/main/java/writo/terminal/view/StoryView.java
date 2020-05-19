@@ -11,4 +11,23 @@ public class StoryView implements View {
     private String title;
     private String content;
 
+    public long getId() {
+        return id;
+    }
+
+    public long getAuthorId() {
+        return authorId;
+    }
+
+    public long getFatherId() {
+        return fatherId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

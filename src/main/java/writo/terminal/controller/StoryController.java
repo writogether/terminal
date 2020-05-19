@@ -1,6 +1,10 @@
 package writo.terminal.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import writo.terminal.mapper.StoryMapper;
+import writo.terminal.mapper.UserMapper;
+import writo.terminal.util.Auth;
 import writo.terminal.util.Res;
 import writo.terminal.view.StoryView;
 
@@ -8,6 +12,13 @@ import writo.terminal.view.StoryView;
 @RequestMapping("/api/story")
 public class StoryController {
 
+    private final StoryMapper storyMapper;
+    private final Auth auth;
+    @Autowired
+    public StoryController(StoryMapper storyMapper, Auth auth) {
+        this.storyMapper = storyMapper;
+        this.auth = auth;
+    }
     /**
      * Upload a story.
      *
@@ -15,7 +26,23 @@ public class StoryController {
      */
     @PostMapping("/upload")
     public Res upload(@RequestBody StoryView storyView) {
-        return new Res(); // todo
+        long father_id=storyView.getId();
+        long author_id=storyView.getAuthorId();
+        String title=storyView.getTitle();
+        String content=storyView.getContent();
+        storyMapper.uploadStory(father_id,author_id,title);
+        storyMapper.upload_story_content(content);
+        return new Res("Upload successfully!");
+    }
+
+    /**
+     * Delete a story.
+     * Delete content only
+     */
+    @PostMapping("/content/{id}")
+    public Res deleteStoryContent(@PathVariable long id){
+        storyMapper.delete_story_content(id,"Story deleted.");
+        return new Res("Delete successfully!");
     }
 
     /**
@@ -33,7 +60,7 @@ public class StoryController {
      */
     @GetMapping("/content/{id}")
     public Res getStoryContent(@PathVariable long id) {
-        return null; // todo
+        return new Res(storyMapper.getStoryContentById(id));
     }
 
 }

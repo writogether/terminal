@@ -19,4 +19,9 @@ public interface UserMapper {
     @Update(value = "insert into writo.user (username,password) values (#{userView.username}, #{userView.password})")
     void register(@Param("userView") UserView userView);
 
+    @Select(value = "select * from writo.user where phone_number=#{phone_number})")
+    boolean checkIfExisted(@Param("phone_number") String phone_number);
+
+    @Update(value = "update writo.user set description=#{description},username=#{username},email=#{email},phone_number=#{phone_number} where id=#{id}")
+    void updateById(@Param("id")long id,String description,String username,String email,String phone_number);
 }

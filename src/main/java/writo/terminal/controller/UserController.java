@@ -31,18 +31,26 @@ public class UserController {
      */
     @GetMapping("search/{id}")
     public Res search(@PathVariable long id) {
-        return new Res(userMapper.getUserById(id).toView());
+        return new Res(userMapper.getUserById(id));
     }
 
     /**
      * Register account.
-     *
      * @param userView contains username, password, phoneNumber.
      */
     @PostMapping("/register")
     public Res register(@RequestBody UserView userView) {
+        String phone_number=userView.getPhone_number();
+        boolean user_existed=userMapper.checkIfExisted(phone_number);
+        if(user_existed){
+            System.out.println("User existed");
+            System.exit(1);
+        }
+        else {
+            userMapper.register(userView);
+        }
         userMapper.register(userView);
-        return new Res();
+        return new Res("Register successfully!");
     }
 
     /**
@@ -77,6 +85,20 @@ public class UserController {
     @PostMapping("/authenticate")
     public Res authenticate(HttpServletRequest request) {
         return auth.authenticate(request);
+    }
+
+    /**
+     * user info admin
+     */
+    @PostMapping("/update")
+    public Res upadateUserInfo(@RequestBody UserView userView){
+        Long id=userView.getId();
+        String description=userView.getDescription();
+        String username=userView.getUsername();
+        String email=userView.getEmail();
+        String phone_number=userView.getPhone_number();
+        userMapper.updateById(id,description,username,email,phone_number);
+        return new Res("Information modified successfully!");
     }
 
 }

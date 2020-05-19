@@ -9,9 +9,9 @@ collective writing service provider.
 
 ## todo
 - [x] framework.
-- [ ] register and login.
-- [ ] personal info admin.
-- [ ] story upload, modification, deletion.
+- [x] register and login.
+- [x] personal info admin.
+- [x] story upload, modification, deletion.
 - [ ] favorite stories.
 - [ ] tags and story search.
 - [ ] comment and evaluate.
