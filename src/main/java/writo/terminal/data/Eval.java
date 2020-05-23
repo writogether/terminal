@@ -1,13 +1,16 @@
 package writo.terminal.data;
 
-import writo.terminal.view.View;
+import writo.terminal.contract.Entity;
+import writo.terminal.type.EvalType;
 
 public class Eval implements Entity {
 
     private long id;
     private long userId;
     private long storyId;
-    private String type;
+    private EvalType type;
+
+    public Eval() {}
 
     public long getId() {
         return id;
@@ -33,17 +36,12 @@ public class Eval implements Entity {
         this.storyId = storyId;
     }
 
-    public String getType() {
+    public EvalType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EvalType type) {
         this.type = type;
-    }
-
-    @Override
-    public View toView() {
-        return null;
     }
 
 }

@@ -29,18 +29,19 @@ public class Auth {
         String id = null;
         String loginToken = null;
         Cookie[] cookies = request.getCookies();
-        if (null == cookies) return new Res("No cookies", false);
+        if (null == cookies) return Res.oops().setMessage("No cookies");
         for (Cookie cookie : cookies)
             if (cookie.getName().equals("id")) id = cookie.getValue();
             else if (cookie.getName().equals("loginToken")) loginToken = cookie.getValue();
-        if (null == id) return new Res("No cookies named id", false);
-        if (null == loginToken) return new Res("No cookies named loginToken", false);
+        if (null == id) return Res.oops().setMessage("No cookies named id");
+        if (null == loginToken) return Res.oops().setMessage("No cookies named loginToken");
         System.out.println("Try to authenticate id: " + id);
-        boolean ok = check_login_token(String.valueOf(id), loginToken);
-        return new Res(ok);
+        boolean ok = checkLoginToken(id, loginToken);
+
+        return ok ? Res.ok(Integer.parseInt(id)) : Res.oops().setMessage("login please.");
     }
 
-    public boolean check_login_token(String id, String token) {
+    public boolean checkLoginToken(String id, String token) {
         Object actual = template.opsForHash().get("login_token", id);
         if (actual == null) {
             System.out.println("No token found in server");
@@ -51,7 +52,7 @@ public class Auth {
         return actual.toString().equals(token);
     }
 
-    public String cache_login_token(User user) {
+    public String cacheLoginToken(User user) {
         String key = String.valueOf(user.getId());
         String loginToken = encode(user.hashCode());
         template.opsForHash().put("login_token", key, loginToken);

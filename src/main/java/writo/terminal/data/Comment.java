@@ -1,7 +1,7 @@
 package writo.terminal.data;
 
 import lombok.Data;
-import writo.terminal.view.View;
+import writo.terminal.contract.Entity;
 
 @Data
 public class Comment implements Entity {
@@ -11,9 +11,6 @@ public class Comment implements Entity {
     private long storyId;
     private String content;
 
-    @Override
-    public View toView() {
-        return null;
-    }
+    public Comment() {}
 
 }

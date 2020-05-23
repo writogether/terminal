@@ -1,7 +1,8 @@
 package writo.terminal.data;
 
 import lombok.Data;
-import writo.terminal.view.View;
+import writo.terminal.contract.Entity;
+import writo.terminal.type.TagType;
 
 @Data
 public class Story implements Entity {
@@ -10,10 +11,10 @@ public class Story implements Entity {
     private long fatherId;
     private long authorId;
     private String title;
+    private TagType tag;
 
-    @Override
-    public View toView() {
-        return null;
+    public Story() {
+        this.tag = TagType.Other;
     }
 
 }

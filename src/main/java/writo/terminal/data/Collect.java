@@ -4,9 +4,10 @@ import lombok.Data;
 import writo.terminal.contract.Entity;
 
 @Data
-public class StoryContent implements Entity {
+public class Collect implements Entity {
 
     private long id;
-    private String content;
+    private long userId;
+    private long storyId;
 
 }

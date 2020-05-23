@@ -1,11 +1,8 @@
 package writo.terminal.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import writo.terminal.data.User;
-import writo.terminal.view.UserView;
+import writo.terminal.view.RegisterView;
 
 @Mapper
 public interface UserMapper {
@@ -13,15 +10,16 @@ public interface UserMapper {
     @Select(value = "select * from writo.user where id=#{id} ")
     User getUserById(@Param("id") long id);
 
-    @Select(value = "select * from writo.user where username=#{username} and password=md5(#{password})")
-    User login(@Param("username") String username, @Param("password") String password);
+    @Select(value = "select * from writo.user where username=#{username} ")
+    User getUserByName(@Param("username") String username);
 
-    @Update(value = "insert into writo.user (username,password) values (#{userView.username}, #{userView.password})")
-    void register(@Param("userView") UserView userView);
+    @Select(value = "select * from writo.user where phone_number=#{phoneNumber} ")
+    User getUserByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
-    @Select(value = "select * from writo.user where phone_number=#{phone_number})")
-    boolean checkIfExisted(@Param("phone_number") String phone_number);
+    @Insert(value = "insert into writo.user (username,password,phone_number) values (#{userView.username}, md5(#{userView.password} ), #{userView.phoneNumber} )")
+    void register(@Param("userView") RegisterView userView);
 
     @Update(value = "update writo.user set description=#{description},username=#{username},email=#{email},phone_number=#{phone_number} where id=#{id}")
-    void updateById(@Param("id")long id,String description,String username,String email,String phone_number);
+    void updateById(@Param("id") long id, String description, String username, String email, String phone_number);
+
 }

@@ -5,13 +5,11 @@ import writo.terminal.contract.View;
 import writo.terminal.data.User;
 
 @Data
-public class UserView implements View<User> {
+public class RegisterView implements View<User> {
 
     private long id;
-    private String description;
     private String username;
+    private String password;
     private String phoneNumber;
-    private String email;
-    private long level;
 
 }

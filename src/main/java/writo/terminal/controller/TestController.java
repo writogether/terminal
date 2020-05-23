@@ -31,10 +31,10 @@ public class TestController {
         user.setId(1);
         user.setUsername("UU");
         user.setPassword("wao");
-        auth.cache_login_token(user);
-        boolean x = auth.check_login_token("1", "token_here");
+        auth.cacheLoginToken(user);
+        boolean x = auth.checkLoginToken("1", "token_here");
         System.out.println(x ? "yes" : "no");
-        return new Res(x);
+        return x ? Res.ok() : Res.oops();
     }
 
 }
