@@ -3,6 +3,7 @@ package writo.terminal.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import writo.terminal.data.Collect;
+import writo.terminal.data.Story;
 import writo.terminal.mapper.StoryMapper;
 import writo.terminal.type.TagType;
 import writo.terminal.util.Auth;
@@ -11,6 +12,8 @@ import writo.terminal.util.WellTested;
 import writo.terminal.view.StoryView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/story")
@@ -72,7 +75,7 @@ public class StoryController {
         return Res.ok(storyMapper.getStoryContentById(id));
     }
 
-    @GetMapping("/get-by-type")
+    @GetMapping("/by-type")
     public Res getStoryByType(TagType tag) {
         return Res.ok(storyMapper.getStoryByType(tag));
     }
@@ -81,11 +84,24 @@ public class StoryController {
     public Res collectStory(@PathVariable(name = "id") long storyId, HttpServletRequest request) {
         Res isLogin = auth.authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
+
         Collect collect = new Collect();
         collect.setUserId((Integer) isLogin.getData());
         collect.setStoryId(storyId);
         storyMapper.collectStory(collect);
         return Res.ok();
+    }
+
+    @GetMapping("collect")
+    public Res getCollection(HttpServletRequest request) {
+        Res isLogin = auth.authenticate(request);
+        if (!isLogin.getSuccess()) return isLogin;
+        List<Integer> storyIds = storyMapper.getStoryByCollector((Integer) isLogin.getData());
+        List<Story> stories = new ArrayList<>();
+        for (int storyId : storyIds) {
+            stories.add(storyMapper.getStoryById(storyId));
+        }
+        return Res.ok(stories);
     }
 
 }

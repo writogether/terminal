@@ -25,10 +25,16 @@ public interface StoryMapper {
     @Update(value = "update writo.story_content set content=#{content} where id=#{id}")
     void delete_story_content(@Param("id") long id, @Param("content") String content);
 
+    @Select(value = "select * from writo.story where id=#{id} ")
+    Story getStoryById(@Param("id") Integer id);
+
     @Select(value = "select content from writo.story_content where id=#{id}")
     StoryContent getStoryContentById(@Param("id") long id);
 
     @Select(value = "select * from writo.story where tag=#{tagType.name} ")
     List<Story> getStoryByType(@Param("tagType") TagType tagType);
+
+    @Select(value = "select * from writo.collect where user_id=#{id}")
+    List<Integer> getStoryByCollector(@Param("id") Integer id);
 
 }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import writo.terminal.data.Comment;
 import writo.terminal.util.Res;
 import writo.terminal.view.CommentView;
 import writo.terminal.view.EvalView;
@@ -17,6 +18,8 @@ public class InteractController {
      */
     @PostMapping("/comment")
     public Res comment(@RequestBody CommentView commentView) {
+        Comment comment = commentView.toEntity();
+
         return null; // todo
     }
 
