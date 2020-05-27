@@ -1,17 +1,19 @@
-package writo.terminal.util;
+package writo.terminal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import writo.terminal.core.ServiceI.AuthI;
 import writo.terminal.data.User;
+import writo.terminal.util.Res;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
-public class Auth {
+public class Auth implements AuthI {
 
     private final StringRedisTemplate template;
 

@@ -15,24 +15,4 @@ public class StoryView implements View<Story> {
     private String content;
     private TagType tag;
 
-    public long getId() {
-        return id;
-    }
-
-    public long getAuthorId() {
-        return authorId;
-    }
-
-    public long getFatherId() {
-        return fatherId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
 }

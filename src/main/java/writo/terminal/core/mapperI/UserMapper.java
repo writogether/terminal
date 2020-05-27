@@ -1,4 +1,4 @@
-package writo.terminal.mapper;
+package writo.terminal.core.mapperI;
 
 import org.apache.ibatis.annotations.*;
 import writo.terminal.data.User;

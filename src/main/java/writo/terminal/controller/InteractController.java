@@ -11,7 +11,7 @@ import writo.terminal.view.EvalView;
 
 @RestController
 @RequestMapping("/api/interact")
-public class InteractController {
+public class InteractController extends Base {
 
     /**
      * Comment a story or a comment.
