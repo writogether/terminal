@@ -1,17 +1,17 @@
 package writo.terminal.core;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 import writo.terminal.core.ServiceI.AuthI;
 
 @Component
 @Getter
+@Accessors(fluent = true)
 public class Service {
 
-    private final AuthI authS;
+    private final AuthI auth;
 
-    @Autowired
-    public Service(AuthI authS) {this.authS = authS;}
+    public Service(AuthI auth) {this.auth = auth;}
 
 }

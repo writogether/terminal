@@ -15,7 +15,7 @@ public class TestController extends Base {
 
     @GetMapping("/x")
     public Res testX() {
-        User r = core.mapper.getUserM().getUserById(1);
+        User r = mapper().user().getUserById(1);
         System.out.println("X");
         return Res.ok(r);
     }
