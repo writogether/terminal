@@ -23,14 +23,14 @@ public class InteractController extends Base {
     @PostMapping("/comment")
     @WellTested
     public Res comment(@RequestBody CommentView commentView, HttpServletRequest request) {
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
 
         Comment comment = new Comment();
         comment.setCommenterId(commentView.getCommenterId());
         comment.setContent(commentView.getContent());
         comment.setStoryId(commentView.getStoryId());
-        core.mapper.getStoryM().commentStory(comment);
+        core.mapper().story().commentStory(comment);
         return Res.ok("Comment Successfully!");
     }
 
@@ -39,14 +39,14 @@ public class InteractController extends Base {
      */
     @PostMapping("/evaluate")
     public Res evaluate(@RequestBody EvalView evalView,HttpServletRequest request) {
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
 
         Eval eval=new Eval();
         eval.setStoryId(evalView.getStoryId());
         eval.setType(evalView.getType());
         eval.setUserId(evalView.getLikerId());
-        core.mapper.getEvalM().evalStory(eval);
+        core.mapper().eval().evalStory(eval);
         return Res.ok("Evaluate Successfully!");
     }
 

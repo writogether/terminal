@@ -45,11 +45,11 @@ public class StoryController extends Base {
     @PostMapping("/delete/{id}")
     @WellTested
     public Res deleteStory(@PathVariable long id,HttpServletRequest request) {
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
 
-        core.mapper.getStoryM().deleteStory(id,false);
-        core.mapper.getStoryM().deleteStoryContent(id, "Story deleted.");
+        core.mapper().story().deleteStory(id,false);
+        core.mapper().story().deleteStoryContent(id, "Story deleted.");
         return Res.ok().setMessage("Delete successfully!");
     }
 
@@ -60,10 +60,10 @@ public class StoryController extends Base {
      */
     @GetMapping("/allStory")
     public Res getAllStory() {
-        List<Story> stories =core.mapper.getStoryM().getAllStory();
+        List<Story> stories =core.mapper().story().getAllStory();
         List<View> storyViews=new ArrayList<>();
         for(Story s:stories){
-            StoryContent storyContent=core.mapper.getStoryM().getStoryContentById(s.getId());
+            StoryContent storyContent=core.mapper().story().getStoryContentById(s.getId());
             String desc=storyContent.getContent().substring(0,80);
             StoryView sv= new StoryView();
             sv.setAuthorId(s.getAuthorId());
@@ -82,38 +82,39 @@ public class StoryController extends Base {
      * Get story content by id.
      */
     @GetMapping("/content/{id}")
+    @WellTested
     public Res getStoryContent(@PathVariable long id) {
-        return Res.ok(core.mapper.getStoryM().getStoryContentById(id));
+        return Res.ok(core.mapper().story().getStoryContentById(id));
     }
 
     @GetMapping("/by-type")
     public Res getStoryByType(TagType tag) {
-        return Res.ok(core.mapper.getStoryM().getStoryByType(tag));
+        return Res.ok(core.mapper().story().getStoryByType(tag));
     }
 
     @PostMapping("collect/{id}")
     @WellTested
     public Res collectStory(@PathVariable(name = "id") long storyId, HttpServletRequest request) {
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        if(core.mapper.getCollectM().checkIfCollected((Integer)isLogin.getData(),storyId).size()>0)
+        if(core.mapper().collect().checkIfCollected((Integer)isLogin.getData(),storyId).size()>0)
             return Res.oops("Collected already!");
         Collect collect = new Collect();
         collect.setUserId((Integer) isLogin.getData());
         collect.setStoryId(storyId);
-        core.mapper.getCollectM().collectStory(collect);
+        core.mapper().collect().collectStory(collect);
         return Res.ok();
     }
 
     @GetMapping("collect")
     @WellTested
     public Res getCollection(HttpServletRequest request) {
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        List<Integer> storyIds = core.mapper.getStoryM().getStoryByCollector((Integer) isLogin.getData());
+        List<Integer> storyIds = core.mapper().story().getStoryByCollector((Integer) isLogin.getData());
         List<Story> stories = new ArrayList<>();
         for (int storyId : storyIds) {
-            stories.add(core.mapper.getStoryM().getStoryById(storyId));
+            stories.add(core.mapper().story().getStoryById(storyId));
         }
         return Res.ok(stories);
     }
