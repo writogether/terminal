@@ -27,6 +27,13 @@ public class Res {
         return res;
     }
 
+    public static Res oops(String message) {
+        Res res = new Res();
+        res.success = false;
+        res.setMessage(message);
+        return res;
+    }
+
     public Res setMessage(String message) {
         this.message = message;
         return this;

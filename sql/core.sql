@@ -45,6 +45,7 @@ create table `story`
     `author_id` int(11)      not null default 0,
     `title`     varchar(255) not null default '',
     `tag`       varchar(255) not null default '',
+    `valid`     boolean      not null default true,
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;

@@ -15,7 +15,7 @@ collective writing service provider.
 - [x] story upload, modification, deletion.
 - [x] favorite stories.
 - [x] tags and story search.
-- [ ] comment and evaluate.
+- [x] comment and evaluate.
 
 ## extra function
 - [ ] private story repo.
