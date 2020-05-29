@@ -1,7 +1,7 @@
 package writo.terminal.core;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 import writo.terminal.core.mapperI.CollectMapper;
 import writo.terminal.core.mapperI.EvalMapper;
@@ -10,19 +10,19 @@ import writo.terminal.core.mapperI.UserMapper;
 
 @Component
 @Getter
+@Accessors(fluent = true)
 public class Mapper {
 
-    private final UserMapper userM;
-    private final EvalMapper evalM;
-    private final StoryMapper storyM;
-    private final CollectMapper collectM;
+    private final UserMapper user;
+    private final EvalMapper eval;
+    private final StoryMapper story;
+    private final CollectMapper collect;
 
-    @Autowired
-    public Mapper(UserMapper userM, EvalMapper evalM, StoryMapper storyM, CollectMapper collectM) {
-        this.userM = userM;
-        this.evalM = evalM;
-        this.storyM = storyM;
-        this.collectM = collectM;
+    public Mapper(UserMapper user, EvalMapper eval, StoryMapper story, CollectMapper collect) {
+        this.user = user;
+        this.eval = eval;
+        this.story = story;
+        this.collect = collect;
     }
 
 }

@@ -12,7 +12,6 @@ import writo.terminal.util.WellTested;
 import writo.terminal.view.StoryView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +28,13 @@ public class StoryController extends Base {
     @WellTested
     public Res upload(@RequestBody StoryView storyView, HttpServletRequest request) {
 
-        Res isLogin = core.service.getAuthS().authenticate(request);
+        Res isLogin = service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
         storyView.setAuthorId((Integer) isLogin.getData());
 
         String content = storyView.getContent();
-        core.mapper.getStoryM().uploadStory(storyView);
-        core.mapper.getStoryM().upload_story_content(content);
+        mapper().story().uploadStory(storyView);
+        mapper().story().upload_story_content(content);
         return Res.ok().setMessage("Upload successfully!");
     }
 
@@ -83,7 +82,6 @@ public class StoryController extends Base {
      * Get story content by id.
      */
     @GetMapping("/content/{id}")
-    @WellTested
     public Res getStoryContent(@PathVariable long id) {
         return Res.ok(core.mapper.getStoryM().getStoryContentById(id));
     }

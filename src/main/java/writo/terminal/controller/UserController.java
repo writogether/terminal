@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/user")
 public class UserController extends Base {
 
-//    private final UserMapper userMapper = core.mapper.getUser();
-//    private final AuthI auth = core.service.getAuth();
+//    private final UserMapper userMapper = mapper().user();
+//    private final AuthI auth = service().getAuth();
 
     /**
      * Get user info by id.
@@ -26,7 +26,7 @@ public class UserController extends Base {
     @WellTested
     @GetMapping("search/{id}")
     public Res search(@PathVariable long id) {
-        User user = core.mapper.getUserM().getUserById(id);
+        User user = mapper().user().getUserById(id);
         return Res.ok(user.toView(UserView.class));
     }
 
@@ -38,11 +38,11 @@ public class UserController extends Base {
     @WellTested
     @PostMapping("/register")
     public Res register(@RequestBody RegisterView registerView) {
-        if (null != core.mapper.getUserM().getUserByPhoneNumber(registerView.getPhoneNumber())
-                || null != core.mapper.getUserM().getUserByName(registerView.getUsername())) {
+        if (null != mapper().user().getUserByPhoneNumber(registerView.getPhoneNumber())
+                || null != mapper().user().getUserByName(registerView.getUsername())) {
             return Res.oops().setMessage("user already existed.");
         }
-        core.mapper.getUserM().register(registerView);
+        mapper().user().register(registerView);
         return Res.ok().setMessage("Register successfully!");
 
     }
@@ -55,8 +55,8 @@ public class UserController extends Base {
     @WellTested
     @PostMapping("/login")
     public Res login(@RequestBody LoginView loginView, HttpServletResponse response) {
-        User user = core.mapper.getUserM().getUserByName(loginView.getUsername());
-        if (null == user) user = core.mapper.getUserM().getUserByPhoneNumber(loginView.getUsername());
+        User user = mapper().user().getUserByName(loginView.getUsername());
+        if (null == user) user = mapper().user().getUserByPhoneNumber(loginView.getUsername());
         if (null == user) return Res.oops().setMessage("username not existed.");
         if (!user.getPassword().equals(DigestUtil.md5Hex(loginView.getPassword()))) {
             return Res.oops().setMessage("wrong password.");
@@ -68,7 +68,7 @@ public class UserController extends Base {
         idCki.setPath("/api");
         response.addCookie(idCki);
 
-        String token = core.service.getAuthS().cacheLoginToken(user);
+        String token = service().auth().cacheLoginToken(user);
         Cookie loginTokenCki = new Cookie("loginToken", token);
         loginTokenCki.setMaxAge(expiry);
         loginTokenCki.setPath("/api");
@@ -83,7 +83,7 @@ public class UserController extends Base {
     @WellTested
     @PostMapping("/authenticate")
     public Res authenticate(HttpServletRequest request) {
-        return core.service.getAuthS().authenticate(request);
+        return service().auth().authenticate(request);
     }
 
     /**
@@ -96,7 +96,7 @@ public class UserController extends Base {
         String username = userView.getUsername();
         String email = userView.getEmail();
         String phone_number = userView.getPhoneNumber();
-        core.mapper.getUserM().updateById(id, description, username, email, phone_number);
+        mapper().user().updateById(id, description, username, email, phone_number);
         return Res.ok().setMessage("Information modified successfully!");
     }
 

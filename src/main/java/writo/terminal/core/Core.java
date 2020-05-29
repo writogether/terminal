@@ -1,12 +1,16 @@
 package writo.terminal.core;
 
+import lombok.Value;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
 @Component
+@Value
+@Accessors(fluent = true)
 public class Core {
 
-    final public Mapper mapper;
-    final public Service service;
+    Mapper mapper;
+    Service service;
 
     public Core(Mapper mapper, Service service) {
         this.mapper = mapper;
