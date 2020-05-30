@@ -49,8 +49,8 @@ create table `story`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story`
-values ();
+insert into `story`(tag)
+values ('Other');
 commit;
 --
 

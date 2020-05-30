@@ -32,10 +32,13 @@ public interface StoryMapper {
     @Select(value = "select * from writo.story where id=#{id} ")
     Story getStoryById(@Param("id") Integer id);
 
-    @Select(value = "select content from writo.story_content where id=#{id}")
+    @Select(value = "select * from writo.story_content where id=#{id}")
     StoryContent getStoryContentById(@Param("id") long id);
 
-    @Select(value = "select * from writo.story where tag=#{tagType.name} ")
+    @Select(value = "select * from writo.story where author_id=#{author_id}")
+    List<Story> getStoryByAuthor(@Param("author_id")long author_id);
+
+    @Select(value = "select * from writo.story where tag=#{tagType} ")
     List<Story> getStoryByType(@Param("tagType") TagType tagType);
 
     @Select(value = "select * from writo.collect where user_id=#{id}")
@@ -46,6 +49,9 @@ public interface StoryMapper {
 
     @Insert(value = "insert into writo.comment (commenter_id,story_id,content)values(#{comment.commenterId},#{comment.storyId},#{comment.content})")
     void commentStory(@Param("comment") Comment comment);
+
+    @Select(value = "select * from writo.comment where story_id=#{story_id}")
+    List<Comment> getComment(@Param("story_id")long story_id);
 
 
 }

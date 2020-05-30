@@ -6,6 +6,7 @@ import writo.terminal.contract.View;
 import writo.terminal.data.Collect;
 import writo.terminal.data.Story;
 import writo.terminal.data.StoryContent;
+import writo.terminal.data.User;
 import writo.terminal.type.TagType;
 import writo.terminal.util.Res;
 import writo.terminal.util.WellTested;
@@ -59,23 +60,18 @@ public class StoryController extends Base {
      * @return contains a list of storyView. (returned by page in future)
      */
     @GetMapping("/allStory")
+    @WellTested
     public Res getAllStory() {
         List<Story> stories =core.mapper().story().getAllStory();
         List<View> storyViews=new ArrayList<>();
         for(Story s:stories){
             StoryContent storyContent=core.mapper().story().getStoryContentById(s.getId());
-            String desc=storyContent.getContent().substring(0,80);
-            StoryView sv= new StoryView();
-            sv.setAuthorId(s.getAuthorId());
-            sv.setContent(desc);
-            sv.setFatherId(s.getFatherId());
-            sv.setTag(s.getTag());
-            sv.setTitle(s.getTitle());
-
-            storyViews.add(sv);
+            String desc=storyContent.getContent();
+            if(desc!=null)
+                if(desc.length()>80)desc=desc.substring(0,80);
+            storyViews.add(s.toView(StoryView.class));
         }
         return Res.ok(storyViews);
-        // todo
     }
 
     /**
@@ -88,8 +84,25 @@ public class StoryController extends Base {
     }
 
     @GetMapping("/by-type")
-    public Res getStoryByType(TagType tag) {
-        return Res.ok(core.mapper().story().getStoryByType(tag));
+    @WellTested
+    public Res getStoryByType(@RequestParam TagType tag) {
+        List<Story> stories=core.mapper().story().getStoryByType(tag);
+        List<View> storyViews=new ArrayList<>();
+        for(Story story:stories){
+            storyViews.add(story.toView(StoryView.class));
+        }
+        return Res.ok(storyViews);
+    }
+    @GetMapping("/by-username")
+    @WellTested
+    public Res getStoryByUsername(@RequestParam String username){
+        User author=core.mapper().user().getUserByName(username);
+        List<Story> stories=core.mapper().story().getStoryByAuthor(author.getId());
+        List<View> storyViews=new ArrayList<>();
+        for(Story story:stories){
+            storyViews.add(story.toView(StoryView.class));
+        }
+        return Res.ok(storyViews);
     }
 
     @PostMapping("collect/{id}")
@@ -103,7 +116,7 @@ public class StoryController extends Base {
         collect.setUserId((Integer) isLogin.getData());
         collect.setStoryId(storyId);
         core.mapper().collect().collectStory(collect);
-        return Res.ok();
+        return Res.ok().setMessage("Collect Successfully!");
     }
 
     @GetMapping("collect")

@@ -7,6 +7,6 @@ import writo.terminal.data.Eval;
 
 @Mapper
 public interface EvalMapper {
-    @Insert(value = "insert into writo.eval (user_id,story_id,type) values(#{eval.userId},#{eval.storyId},#{type})")
+    @Insert(value = "insert into writo.eval (user_id,story_id,type) values(#{eval.userId},#{eval.storyId},#{eval.type})")
     void evalStory(@Param("eval") Eval eval);
 }
