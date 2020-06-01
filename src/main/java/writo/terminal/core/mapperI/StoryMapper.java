@@ -1,6 +1,7 @@
 package writo.terminal.core.mapperI;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 import writo.terminal.data.Collect;
 import writo.terminal.data.Comment;
 import writo.terminal.data.Story;
@@ -12,6 +13,7 @@ import writo.terminal.view.StoryView;
 import java.util.List;
 
 @Mapper
+@Component
 public interface StoryMapper {
 
 

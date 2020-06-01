@@ -12,9 +12,13 @@ public class Story implements Entity {
     private long authorId;
     private String title;
     private TagType tag;
+    private boolean valid;
+    private boolean open;
 
     public Story() {
-        this.tag = TagType.Other;
+        tag = TagType.Other;
+        valid = true;
+        open = true;
     }
 
 }

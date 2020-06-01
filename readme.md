@@ -18,7 +18,7 @@ collective writing service provider.
 - [x] comment and evaluate.
 
 ## extra function
-- [ ] private story repo.
+- [x] private story repo.
 - [ ] hot story delivery.
 - [ ] extern share.
 - [ ] virtual currency.

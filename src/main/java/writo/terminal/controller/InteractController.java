@@ -1,6 +1,7 @@
 package writo.terminal.controller;
 
 import org.springframework.web.bind.annotation.*;
+import writo.terminal.contract.Entity;
 import writo.terminal.contract.View;
 import writo.terminal.data.Comment;
 import writo.terminal.data.Eval;
@@ -36,10 +37,10 @@ public class InteractController extends Base {
 
     @GetMapping("/getComment")
     @WellTested
-    public Res getComment(@RequestParam long storyId){
-        List<Comment> comments=core.mapper().story().getComment(storyId);
-        List<View> commentViews=new ArrayList<>();
-        for(Comment comment:comments){
+    public Res getComment(@RequestParam long storyId) {
+        List<Comment> comments = core.mapper().story().getComment(storyId);
+        List<View> commentViews = new ArrayList<>();
+        for (Comment comment : comments) {
             commentViews.add(comment.toView(CommentView.class));
         }
         return Res.ok(commentViews);
@@ -50,11 +51,11 @@ public class InteractController extends Base {
      */
     @PostMapping("/evaluate")
     @WellTested
-    public Res evaluate(@RequestBody EvalView evalView,HttpServletRequest request) {
+    public Res evaluate(@RequestBody EvalView evalView, HttpServletRequest request) {
         Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
 
-        Eval eval=new Eval();
+        Eval eval = new Eval();
         eval.setStoryId(evalView.getStoryId());
         eval.setType(evalView.getType());
         eval.setUserId(evalView.getLikerId());
