@@ -74,7 +74,7 @@ public class UserController extends Base {
         loginTokenCki.setPath("/api");
         response.addCookie(loginTokenCki);
 
-        return Res.ok().setMessage("Login successfully!");
+        return Res.ok(user).setMessage("Login successfully!");
     }
 
     /**
