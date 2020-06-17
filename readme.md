@@ -19,6 +19,7 @@ collective writing service provider.
 
 ## extra function
 - [x] private story repo.
+- [x] story popularity and story tree depth. 
 - [ ] hot story delivery.
 - [ ] extern share.
 - [ ] virtual currency.

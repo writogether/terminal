@@ -26,7 +26,6 @@ public class StoryController extends Base {
      * @param storyView contains contains id, fatherId, authorId, title and (when view story details) content.
      */
     @PostMapping("/upload")
-    @WellTested
     public Res upload(@RequestBody StoryView storyView, HttpServletRequest request) {
 
         Res isLogin = service().auth().authenticate(request);
@@ -34,7 +33,8 @@ public class StoryController extends Base {
         storyView.setAuthorId((Integer) isLogin.getData());
 
         String content = storyView.getContent();
-        mapper().story().uploadStory(storyView);
+        int father_depth=core.mapper().story().getDepthOfStory(storyView.getFatherId());
+        mapper().story().uploadStory(storyView,father_depth);
         mapper().story().upload_story_content(content);
         return Res.ok().setMessage("Upload successfully!");
     }
@@ -122,37 +122,6 @@ public class StoryController extends Base {
         return Res.ok(storyViews);
     }
 
-    /**
-     * Collect a story.
-     */
-    @PostMapping("collect/{id}")
-    @WellTested
-    public Res collectStory(@PathVariable(name = "id") long storyId, HttpServletRequest request) {
-        Res isLogin = core.service().auth().authenticate(request);
-        if (!isLogin.getSuccess()) return isLogin;
-        if (core.mapper().collect().checkIfCollected((Integer) isLogin.getData(), storyId).size() > 0)
-            return Res.oops("Collected already!");
-        Collect collect = new Collect();
-        collect.setUserId((Integer) isLogin.getData());
-        collect.setStoryId(storyId);
-        core.mapper().collect().collectStory(collect);
-        return Res.ok().setMessage("Collect Successfully!");
-    }
 
-    /**
-     * View someone's collection.
-     */
-    @GetMapping("collect")
-    @WellTested
-    public Res getCollection(HttpServletRequest request) {
-        Res isLogin = core.service().auth().authenticate(request);
-        if (!isLogin.getSuccess()) return isLogin;
-        List<Integer> storyIds = core.mapper().story().getStoryByCollector((Integer) isLogin.getData());
-        List<Story> stories = new ArrayList<>();
-        for (int storyId : storyIds) {
-            stories.add(core.mapper().story().getStoryById(storyId));
-        }
-        return Res.ok(stories);
-    }
 
 }

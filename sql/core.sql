@@ -29,10 +29,10 @@ create table `user`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `user` (username, password)
-values ('userA', md5('passA'));
-insert into `user` (username, password)
-values ('userB', md5('passB'));
+insert into `user` (username, password,phone_number)
+values ('userA', md5('passA'),'11111111111');
+insert into `user` (username, password,phone_number)
+values ('userB', md5('passB'),'22222222222');
 commit;
 --
 
@@ -47,6 +47,8 @@ create table `story`
     `tag`       varchar(255) not null default 'Other',
     `valid`     boolean      not null default true,
     `open`      boolean      not null default true,
+    `popularity`int(11)      not null default 0,
+    `depth`     int(11)      not null default 0,
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
