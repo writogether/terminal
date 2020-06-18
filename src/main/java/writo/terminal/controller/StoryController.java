@@ -13,6 +13,7 @@ import writo.terminal.view.StoryView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +32,9 @@ public class StoryController extends Base {
         Res isLogin = service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
         storyView.setAuthorId((Integer) isLogin.getData());
-
         String content = storyView.getContent();
-        int father_depth=core.mapper().story().getDepthOfStory(storyView.getFatherId());
-        mapper().story().uploadStory(storyView,father_depth);
+        int father_depth =storyView.getFatherId()==0?-1:core.mapper().story().getDepthOfStory(storyView.getFatherId());
+        mapper().story().uploadStory(storyView, father_depth);
         mapper().story().upload_story_content(content);
         return Res.ok().setMessage("Upload successfully!");
     }
@@ -61,16 +61,19 @@ public class StoryController extends Base {
      */
     @GetMapping("/allStory")
     @WellTested
+
+
     public Res getAllStory() {
         List<Story> stories = core.mapper().story().getAllStory();
         List<View> storyViews = new ArrayList<>();
         for (Story s : stories) {
-            StoryContent storyContent = core.mapper().story().getStoryContentById(s.getId());
-            String desc = storyContent.getContent();
-            if (desc != null)
-                if (desc.length() > 80) desc = desc.substring(0, 80);
             storyViews.add(s.toView(StoryView.class));
         }
+        storyViews.sort((o1, o2) -> {
+            StoryView v1 = (StoryView) o1;
+            StoryView v2 = (StoryView) o2;
+            return v2.getPopularity() - v1.getPopularity();
+        });
         return Res.ok(storyViews);
     }
 
@@ -81,6 +84,10 @@ public class StoryController extends Base {
     @WellTested
     public Res getStoryContent(@PathVariable long id) {
         return Res.ok(core.mapper().story().getStoryContentById(id));
+    }
+    @GetMapping("/storyInfo/{id}")
+    public Res getStoryById(@PathVariable long id){
+        return Res.ok(core.mapper().story().getStoryById((int)id));
     }
 
     /**

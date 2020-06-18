@@ -20,7 +20,7 @@ drop table if exists `user`;
 create table `user`
 (
     `id`           int(11)      not null auto_increment,
-    `description`  varchar(255) not null default '',
+    `description`  varchar(255) not null default 'none',
     `username`     varchar(255) not null default '',
     `password`     varchar(255) not null default '',
     `phone_number` varchar(20)  not null default '',

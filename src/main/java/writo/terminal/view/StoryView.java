@@ -14,5 +14,9 @@ public class StoryView implements View<Story> {
     private String title;
     private String content;
     private TagType tag;
+    private boolean valid;
+    private boolean open;
+    private int popularity;
+    private int depth;
 
 }

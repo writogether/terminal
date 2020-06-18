@@ -21,7 +21,7 @@ public interface StoryMapper {
     void upload_story_content(@Param("content") String content);
 
     @Update(value = "insert into writo.story (author_id,title,father_id,tag,depth) values " +
-            "(#{storyView.authorId} ,#{storyView.title} ,#{storyView.fatherId} ,#{storyView.tag},#{f_depth}+1 ) ")
+            "(#{storyView.authorId} ,#{storyView.title} ,#{storyView.fatherId} ,#{storyView.tag},#{father_depth}+1 ) ")
     void uploadStory(@Param("storyView") StoryView storyView,@Param("father_depth")int f_depth);
 
     @Update(value = "update writo.story_content set content=#{content} where id=#{id}")

@@ -14,6 +14,8 @@ public class Story implements Entity {
     private TagType tag;
     private boolean valid;
     private boolean open;
+    private int popularity;
+    private int depth;
 
     public Story() {
         tag = TagType.Other;
