@@ -1,7 +1,6 @@
 package writo.terminal.controller;
 
 import org.springframework.web.bind.annotation.*;
-import writo.terminal.contract.Entity;
 import writo.terminal.contract.View;
 import writo.terminal.data.Collect;
 import writo.terminal.data.Comment;
@@ -20,9 +19,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/interact")
 public class InteractController extends Base {
-    private int evalPop=1;
-    private int commentPop=2;
-    private int collectPop=3;
+
+    private final int evalPop = 1;
+    private final int commentPop = 2;
+    private final int collectPop = 3;
 
     /**
      * Comment a story or a comment.
@@ -37,7 +37,7 @@ public class InteractController extends Base {
         comment.setContent(commentView.getContent());
         comment.setStoryId(commentView.getStoryId());
         core.mapper().story().commentStory(comment);
-        if(core.mapper().story().getAuthorOfStory(commentView.getStoryId())!=commentView.getCommenterId()) {
+        if (core.mapper().story().getAuthorOfStory(commentView.getStoryId()) != commentView.getCommenterId()) {
             core.mapper().story().updatePopularity(commentPop, commentView.getStoryId());
         }
         return Res.ok().setMessage("Comment Successfully!");
@@ -69,8 +69,8 @@ public class InteractController extends Base {
         eval.setUserId(evalView.getLikerId());
         core.mapper().eval().evalStory(eval);
 
-        int pop=eval.getType().equals(EvalType.Like)?evalPop:-evalPop;
-        core.mapper().story().updatePopularity(pop,eval.getStoryId());
+        int pop = eval.getType().equals(EvalType.Like) ? evalPop : -evalPop;
+        core.mapper().story().updatePopularity(pop, eval.getStoryId());
 
         return Res.ok().setMessage("Evaluate Successfully!");
     }
@@ -78,30 +78,24 @@ public class InteractController extends Base {
     /**
      * Collect a story.
      */
-    @PostMapping("collect/{id}")
-    public Res collectStory(@PathVariable(name = "id") long storyId, HttpServletRequest request) {
+    @PostMapping("collect")
+    public Res collectStory(@RequestParam long storyId, HttpServletRequest request) {
         Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        if (core.mapper().collect().checkIfCollected((Integer) isLogin.getData(), storyId).size() > 0)
-            return Res.oops("Collected already!");
-        Collect collect = new Collect();
-        collect.setUserId((Integer) isLogin.getData());
-        collect.setStoryId(storyId);
-        core.mapper().collect().collectStory(collect);
-        core.mapper().story().updatePopularity(collectPop,storyId);
-        return Res.ok().setMessage("Collect Successfully!");
-    }
-
-    @PostMapping("noCollect/{id}")
-    public Res noCollectStory(@PathVariable(name = "id") long storyId, HttpServletRequest request) {
-        Res isLogin = core.service().auth().authenticate(request);
-        if (!isLogin.getSuccess()) return isLogin;
-        Collect collect = new Collect();
-        collect.setUserId((Integer) isLogin.getData());
-        collect.setStoryId(storyId);
-        core.mapper().collect().noCollect(collect);
-        core.mapper().story().updatePopularity(-collectPop,storyId);
-        return Res.ok().setMessage("Cancel Collect Successfully!");
+        long id = (Long) isLogin.getData();
+        Collect collect = mapper().collect().select(id, storyId);
+        if (null == collect) {
+            collect = new Collect();
+            collect.setUserId(id);
+            collect.setStoryId(storyId);
+            core.mapper().collect().collectStory(collect);
+            core.mapper().story().updatePopularity(collectPop, storyId);
+            return Res.ok().setMessage("Collect Successfully!");
+        } else {
+            core.mapper().collect().noCollect(collect);
+            core.mapper().story().updatePopularity(-collectPop, storyId);
+            return Res.ok().setMessage("Cancel Collect Successfully!");
+        }
     }
 
     /**
@@ -112,9 +106,9 @@ public class InteractController extends Base {
     public Res getCollection(HttpServletRequest request) {
         Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        List<Integer> storyIds = core.mapper().story().getStoryByCollector((Integer) isLogin.getData());
+        List<Long> storyIds = core.mapper().story().getStoryByCollector((Long) isLogin.getData());
         List<Story> stories = new ArrayList<>();
-        for (int storyId : storyIds) {
+        for (long storyId : storyIds) {
             stories.add(core.mapper().story().getStoryById(storyId));
         }
         return Res.ok(stories);

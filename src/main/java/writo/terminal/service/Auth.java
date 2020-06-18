@@ -40,7 +40,7 @@ public class Auth implements AuthI {
         System.out.println("Try to authenticate id: " + id);
         boolean ok = checkLoginToken(id, loginToken);
 
-        return ok ? Res.ok(Integer.parseInt(id)) : Res.oops().setMessage("login please.");
+        return ok ? Res.ok(Long.parseLong(id)) : Res.oops().setMessage("login please.");
     }
 
     public boolean checkLoginToken(String id, String token) {

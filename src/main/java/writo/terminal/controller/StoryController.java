@@ -2,9 +2,8 @@ package writo.terminal.controller;
 
 import org.springframework.web.bind.annotation.*;
 import writo.terminal.contract.View;
-import writo.terminal.data.Collect;
 import writo.terminal.data.Story;
-import writo.terminal.data.StoryContent;
+import writo.terminal.data.Tree;
 import writo.terminal.data.User;
 import writo.terminal.type.TagType;
 import writo.terminal.util.Res;
@@ -13,7 +12,6 @@ import writo.terminal.view.StoryView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,19 +21,34 @@ public class StoryController extends Base {
 
     /**
      * Upload a story.
-     *
-     * @param storyView contains contains id, fatherId, authorId, title and (when view story details) content.
+     * Set fatherId to -1 when creating a new story.
      */
     @PostMapping("/upload")
     public Res upload(@RequestBody StoryView storyView, HttpServletRequest request) {
-
         Res isLogin = service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        storyView.setAuthorId((Integer) isLogin.getData());
-        String content = storyView.getContent();
-        int father_depth =storyView.getFatherId()==0?-1:core.mapper().story().getDepthOfStory(storyView.getFatherId());
-        mapper().story().uploadStory(storyView, father_depth);
-        mapper().story().upload_story_content(content);
+
+        Story father = mapper().story().getStoryById(storyView.getFatherId());
+        Story story = storyView.toEntity();
+        story.setAuthorId((Integer) isLogin.getData());
+
+        mapper().story().insert(story);
+
+        if (null == father) {
+            Tree tree = new Tree();
+            tree.setTree("(" + story.getId() + ")");
+            mapper().tree().insert(tree);
+            story.setPath("" + story.getId());
+            story.setTreeId(tree.getId());
+            story.setDepth(0);
+        } else {
+            story.setPath(father.getPath() + "," + story.getId());
+            story.setTreeId(father.getTreeId());
+            story.setDepth(father.getDepth() + 1);
+        }
+
+        mapper().story().update(story);
+        mapper().story().uploadStoryContent(storyView.getContent());
         return Res.ok().setMessage("Upload successfully!");
     }
 
@@ -62,7 +75,6 @@ public class StoryController extends Base {
     @GetMapping("/allStory")
     @WellTested
 
-
     public Res getAllStory() {
         List<Story> stories = core.mapper().story().getAllStory();
         List<View> storyViews = new ArrayList<>();
@@ -85,9 +97,10 @@ public class StoryController extends Base {
     public Res getStoryContent(@PathVariable long id) {
         return Res.ok(core.mapper().story().getStoryContentById(id));
     }
+
     @GetMapping("/storyInfo/{id}")
-    public Res getStoryById(@PathVariable long id){
-        return Res.ok(core.mapper().story().getStoryById((int)id));
+    public Res getStoryById(@PathVariable long id) {
+        return Res.ok(core.mapper().story().getStoryById(id));
     }
 
     /**
@@ -128,7 +141,5 @@ public class StoryController extends Base {
         List<StoryView> storyViews = stories.stream().filter(story -> !story.isOpen()).map(story -> (StoryView) story.toView(StoryView.class)).collect(Collectors.toList());
         return Res.ok(storyViews);
     }
-
-
 
 }

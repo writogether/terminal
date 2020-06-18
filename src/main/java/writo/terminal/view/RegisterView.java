@@ -7,7 +7,7 @@ import writo.terminal.data.User;
 @Data
 public class RegisterView implements View<User> {
 
-    private long id;
+    private Long id;
     private String username;
     private String password;
     private String phoneNumber;
