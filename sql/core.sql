@@ -42,8 +42,8 @@ create table `story`
 (
     `id`         int(20)       not null auto_increment,
     `father_id`  int(20)       not null default 0,
-    `author_id`  int(20)       not null default 0,
-    `title`      varchar(255)  not null default '',
+    `author_id`  int(20)       not null default 1,
+    `title`      varchar(255)  not null default 'none',
     `tag`        varchar(255)  not null default 'Other',
     `valid`      boolean       not null default true,
     `open`       boolean       not null default true,
@@ -54,8 +54,7 @@ create table `story`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story`(tag)
-values ('Other');
+insert into `story` values ();
 commit;
 --
 
@@ -68,8 +67,7 @@ create table `story_content`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story_content`
-values ();
+insert into `story_content` values (1,'story');
 commit;
 --
 
@@ -84,8 +82,6 @@ create table `comment`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `comment`
-values ();
 commit;
 --
 
@@ -100,8 +96,6 @@ create table `eval`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `eval`
-values ();
 commit;
 --
 
@@ -115,8 +109,6 @@ create table `collect`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `collect`
-values ();
 commit;
 --
 

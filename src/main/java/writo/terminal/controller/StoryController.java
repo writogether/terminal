@@ -77,13 +77,13 @@ public class StoryController extends Base {
 
     public Res getAllStory() {
         List<Story> stories = core.mapper().story().getAllStory();
-        List<View> storyViews = new ArrayList<>();
+        List<StoryView> storyViews = new ArrayList<>();
         for (Story s : stories) {
-            storyViews.add(s.toView(StoryView.class));
+            StoryView sv=(StoryView) s.toView(StoryView.class);
+            sv.setUserName(core.mapper().user().getUserById(sv.getAuthorId()).getUsername());
+            storyViews.add(sv);
         }
-        storyViews.sort((o1, o2) -> {
-            StoryView v1 = (StoryView) o1;
-            StoryView v2 = (StoryView) o2;
+        storyViews.sort((v1, v2) -> {
             return v2.getPopularity() - v1.getPopularity();
         });
         return Res.ok(storyViews);
