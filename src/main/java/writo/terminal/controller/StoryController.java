@@ -100,7 +100,9 @@ public class StoryController extends Base {
 
     @GetMapping("/storyInfo/{id}")
     public Res getStoryById(@PathVariable long id) {
-        return Res.ok(core.mapper().story().getStoryById(id));
+        StoryView s=(StoryView) (core.mapper().story().getStoryById(id)).toView(StoryView.class);
+        s.setUserName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
+        return Res.ok(s);
     }
 
     /**

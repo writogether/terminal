@@ -49,7 +49,9 @@ public class InteractController extends Base {
         List<Comment> comments = core.mapper().story().getComment(storyId);
         List<View> commentViews = new ArrayList<>();
         for (Comment comment : comments) {
-            commentViews.add(comment.toView(CommentView.class));
+            CommentView cv=(CommentView) comment.toView(CommentView.class);
+            cv.setUserName(core.mapper().user().getUserById(cv.getCommenterId()).getUsername());
+            commentViews.add(cv);
         }
         return Res.ok(commentViews);
     }

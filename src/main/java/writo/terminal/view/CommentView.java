@@ -9,6 +9,7 @@ public class CommentView implements View<Comment> {
 
     private long id;
     private long commenterId;
+    private String userName;
     private long storyId;
     private String content;
 
