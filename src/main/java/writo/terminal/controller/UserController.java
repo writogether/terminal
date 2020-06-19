@@ -1,5 +1,7 @@
 package writo.terminal.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.crypto.digest.DigestUtil;
 import org.springframework.web.bind.annotation.*;
 import writo.terminal.data.User;
@@ -92,11 +94,9 @@ public class UserController extends Base {
     @PostMapping("/update")
     public Res updateUserInfo(@RequestBody UserView userView) {
         long id = userView.getId();
-        String description = userView.getDescription();
-        String username = userView.getUsername();
-        String email = userView.getEmail();
-        String phone_number = userView.getPhoneNumber();
-        mapper().user().updateById(id, description, username, email, phone_number);
+        User user = mapper().user().getUserById(id);
+        BeanUtil.copyProperties(userView, user, CopyOptions.create().ignoreNullValue());
+        mapper().user().updateById(user);
         return Res.ok().setMessage("Information modified successfully!");
     }
 

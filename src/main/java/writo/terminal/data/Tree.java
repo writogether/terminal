@@ -6,10 +6,10 @@ import lombok.Data;
 public class Tree {
 
     long id;
-    String tree;
+    String sExp;
 
     public Tree() {
-        tree = "";
+        sExp = "";
     }
 
 }

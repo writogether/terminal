@@ -8,16 +8,16 @@ import writo.terminal.type.TagType;
 @Data
 public class StoryView implements View<Story> {
 
-    private long id;
-    private long fatherId;
-    private long authorId;
+    private Long id;
+    private Long fatherId;
+    private Long authorId;
     private String userName;
     private String title;
     private String content;
     private TagType tag;
-    private boolean valid;
-    private boolean open;
-    private int popularity;
-    private int depth;
+    private Boolean valid;
+    private Boolean open;
+    private Integer popularity;
+    private Integer depth;
 
 }

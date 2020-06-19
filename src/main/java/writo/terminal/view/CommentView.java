@@ -7,10 +7,10 @@ import writo.terminal.data.Comment;
 @Data
 public class CommentView implements View<Comment> {
 
-    private long id;
-    private long commenterId;
+    private Long id;
+    private Long commenterId;
+    private Long storyId;
     private String userName;
-    private long storyId;
     private String content;
 
 }

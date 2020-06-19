@@ -6,14 +6,14 @@ import writo.terminal.data.Tree;
 @Mapper
 public interface TreeMapper {
 
-    @Insert("insert into writo.tree (tree) values (#{tree} )")
+    @Insert("insert into writo.tree (s_exp) values (#{tree.sExp}  )")
     @Options(useGeneratedKeys = true, keyProperty = "tree.id", keyColumn = "id")
-    void insert(Tree tree);
+    void insert(@Param("tree") Tree tree);
 
-    @Update("update writo.tree set tree=#{tree} where id=#{id} ")
-    void update(@Param("id") long id, @Param("tree") String tree);
+    @Update("update writo.tree set s_exp=#{sExp} where id=#{id} ")
+    void update(@Param("id") long id, @Param("sExp") String sExp);
 
     @Select("select * from writo.tree where id=#{id}")
-    String select(@Param("id") long id);
+    Tree select(@Param("id") long id);
 
 }

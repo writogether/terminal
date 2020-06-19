@@ -7,6 +7,7 @@ import writo.terminal.data.Tree;
 import writo.terminal.data.User;
 import writo.terminal.type.TagType;
 import writo.terminal.util.Res;
+import writo.terminal.util.StructTree;
 import writo.terminal.util.WellTested;
 import writo.terminal.view.StoryView;
 
@@ -30,18 +31,24 @@ public class StoryController extends Base {
 
         Story father = mapper().story().getStoryById(storyView.getFatherId());
         Story story = storyView.toEntity();
-        story.setAuthorId((Integer) isLogin.getData());
+        story.setAuthorId((Long) isLogin.getData());
 
         mapper().story().insert(story);
 
         if (null == father) {
             Tree tree = new Tree();
-            tree.setTree("(" + story.getId() + ")");
+            tree.setSExp("(" + story.getId() + ")");
             mapper().tree().insert(tree);
+
             story.setPath("" + story.getId());
             story.setTreeId(tree.getId());
             story.setDepth(0);
         } else {
+            Tree tree = mapper().tree().select(father.getTreeId());
+            StructTree structTree = StructTree.deserialize(tree.getSExp());
+            structTree.find(father.getId()).add(story.getId());
+            tree.setSExp(structTree.serialize());
+
             story.setPath(father.getPath() + "," + story.getId());
             story.setTreeId(father.getTreeId());
             story.setDepth(father.getDepth() + 1);
@@ -72,20 +79,17 @@ public class StoryController extends Base {
      *
      * @return contains a list of storyView. (returned by page in future)
      */
-    @GetMapping("/allStory")
+    @GetMapping("/all-story")
     @WellTested
-
     public Res getAllStory() {
-        List<Story> stories = core.mapper().story().getAllStory();
+        List<Story> stories = core.mapper().story().all();
         List<StoryView> storyViews = new ArrayList<>();
         for (Story s : stories) {
             StoryView sv=(StoryView) s.toView(StoryView.class);
             sv.setUserName(core.mapper().user().getUserById(sv.getAuthorId()).getUsername());
             storyViews.add(sv);
         }
-        storyViews.sort((v1, v2) -> {
-            return v2.getPopularity() - v1.getPopularity();
-        });
+        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
         return Res.ok(storyViews);
     }
 
@@ -100,7 +104,7 @@ public class StoryController extends Base {
 
     @GetMapping("/storyInfo/{id}")
     public Res getStoryById(@PathVariable long id) {
-        StoryView s=(StoryView) (core.mapper().story().getStoryById(id)).toView(StoryView.class);
+        StoryView s = (StoryView) (core.mapper().story().getStoryById(id)).toView(StoryView.class);
         s.setUserName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
         return Res.ok(s);
     }
@@ -108,9 +112,9 @@ public class StoryController extends Base {
     /**
      * Get story by type.
      */
-    @GetMapping("/by-type")
+    @GetMapping("/by-tag")
     @WellTested
-    public Res getStoryByType(@RequestParam TagType tag) {
+    public Res getStoryByTag(@RequestParam TagType tag) {
         List<Story> stories = core.mapper().story().getStoryByType(tag);
         List<View> storyViews = new ArrayList<>();
         for (Story story : stories) {

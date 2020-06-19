@@ -10,4 +10,6 @@ public class Collect implements Entity {
     private long userId;
     private long storyId;
 
+    public Collect() {}
+
 }

@@ -14,4 +14,7 @@ public class User implements Entity {
     private String email;
     private long level;
 
+    public User() {
+        description = "";
+    }
 }

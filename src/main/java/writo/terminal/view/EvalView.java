@@ -8,9 +8,9 @@ import writo.terminal.type.EvalType;
 @Data
 public class EvalView implements View<Eval> {
 
-    private long id;
-    private long likerId;
-    private long storyId;
+    private Long id;
+    private Long likerId;
+    private Long storyId;
     private EvalType type;
 
 }

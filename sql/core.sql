@@ -117,7 +117,7 @@ drop table if exists `tree`;
 create table `tree`
 (
     `id`   int(20)       not null auto_increment,
-    `tree` varchar(8196) not null default '',
+    `s_exp` varchar(8196) not null default '',
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;

@@ -44,6 +44,16 @@ public class StructTree {
         return deserialize(tree, 0, tree.length());
     }
 
+    public StructTree find(long id) {
+        if (node == id) return this;
+        if (children.containsKey(id)) return children.get(id);
+        for (var child : children.values()) {
+            var node = child.find(id);
+            if (null != node) return child.children.get(id);
+        }
+        return null;
+    }
+
     public void add(long id) {
         children.put(id, new StructTree(id));
     }

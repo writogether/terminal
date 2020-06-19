@@ -8,14 +8,15 @@ import writo.terminal.type.TagType;
 public class Story implements Entity {
 
     private long id;
+    private long fatherId;
     private long authorId;
     private String title;
     private TagType tag;
     private boolean valid;
     private boolean open;
     private int popularity;
-    private int depth;
     private long treeId;
+    private int depth;
     private String path;
 
     public Story() {

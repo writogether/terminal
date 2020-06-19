@@ -9,4 +9,6 @@ public class StoryContent implements Entity {
     private long id;
     private String content;
 
+    public StoryContent() {}
+
 }

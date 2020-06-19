@@ -13,13 +13,15 @@ public class Mapper {
     private final UserMapper user;
     private final EvalMapper eval;
     private final StoryMapper story;
+    private final CommentMapper comment;
     private final CollectMapper collect;
     private final TreeMapper tree;
 
-    public Mapper(UserMapper user, EvalMapper eval, StoryMapper story, CollectMapper collect, TreeMapper tree) {
+    public Mapper(UserMapper user, EvalMapper eval, StoryMapper story, CommentMapper comment, CollectMapper collect, TreeMapper tree) {
         this.user = user;
         this.eval = eval;
         this.story = story;
+        this.comment = comment;
         this.collect = collect;
         this.tree = tree;
     }

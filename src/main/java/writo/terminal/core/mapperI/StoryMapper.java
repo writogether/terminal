@@ -38,23 +38,17 @@ public interface StoryMapper {
     @Select("select * from writo.story_content where id=#{id}")
     StoryContent getStoryContentById(@Param("id") long id);
 
-    @Select("select * from writo.story where author_id=#{author_id}")
+    @Select("select * from writo.story where author_id=#{author_id} and valid=true")
     List<Story> getStoryByAuthor(@Param("author_id") long author_id);
 
-    @Select("select * from writo.story where tag=#{tagType} ")
+    @Select("select * from writo.story where tag=#{tagType} and valid=true")
     List<Story> getStoryByType(@Param("tagType") TagType tagType);
 
     @Select("select * from writo.collect where user_id=#{id}")
     List<Long> getStoryByCollector(@Param("id") long id);
 
     @Select("select * from writo.story where valid is true")
-    List<Story> getAllStory();
-
-    @Insert("insert into writo.comment (commenter_id,story_id,content)values(#{comment.commenterId},#{comment.storyId},#{comment.content})")
-    void commentStory(@Param("comment") Comment comment);
-
-    @Select("select * from writo.comment where story_id=#{story_id}")
-    List<Comment> getComment(@Param("story_id") long story_id);
+    List<Story> all();
 
     @Update("update writo.story set popularity=popularity+#{popularity} where id=#{storyId}")
     void updatePopularity(@Param("popularity") int popularity, @Param("storyId") long storyId);

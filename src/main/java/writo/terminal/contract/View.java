@@ -10,9 +10,9 @@ public interface View<T extends Entity> {
 
     @SneakyThrows
     default T toEntity() {
-        ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        Class<T> clazz = (Class<T>) type.getActualTypeArguments()[0];
-        T entity = (T) clazz.getConstructors()[0].newInstance();
+        ParameterizedType t = (ParameterizedType) this.getClass().getGenericInterfaces()[0];
+        Class c = (Class) t.getActualTypeArguments()[0];
+        T entity = (T) c.getConstructors()[0].newInstance();
         BeanUtil.copyProperties(this, entity, CopyOptions.create().setIgnoreNullValue(true));
         return entity;
     }

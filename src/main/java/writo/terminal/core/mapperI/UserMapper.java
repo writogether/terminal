@@ -19,7 +19,7 @@ public interface UserMapper {
     @Insert("insert into writo.user (username,password,phone_number) values (#{userView.username}, md5(#{userView.password} ), #{userView.phoneNumber} )")
     void register(@Param("userView") RegisterView userView);
 
-    @Update("update writo.user set description=#{description},username=#{username},email=#{email},phone_number=#{phone_number} where id=#{id}")
-    void updateById(@Param("id") long id, String description, String username, String email, String phone_number);
+    @Update("update writo.user set description=#{user.description},username=#{user.username},phone_number=#{user.phoneNumber} where id=#{user.id}")
+    void updateById(@Param("user") User user);
 
 }

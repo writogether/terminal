@@ -36,7 +36,7 @@ public class InteractController extends Base {
         comment.setCommenterId(commentView.getCommenterId());
         comment.setContent(commentView.getContent());
         comment.setStoryId(commentView.getStoryId());
-        core.mapper().story().commentStory(comment);
+        core.mapper().comment().commentStory(comment);
         if (core.mapper().story().getAuthorOfStory(commentView.getStoryId()) != commentView.getCommenterId()) {
             core.mapper().story().updatePopularity(commentPop, commentView.getStoryId());
         }
@@ -46,7 +46,7 @@ public class InteractController extends Base {
     @GetMapping("/getComment")
     @WellTested
     public Res getComment(@RequestParam long storyId) {
-        List<Comment> comments = core.mapper().story().getComment(storyId);
+        List<Comment> comments = core.mapper().comment().getComment(storyId);
         List<View> commentViews = new ArrayList<>();
         for (Comment comment : comments) {
             CommentView cv=(CommentView) comment.toView(CommentView.class);
