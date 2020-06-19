@@ -47,6 +47,9 @@ public interface StoryMapper {
     @Select("select * from writo.collect where user_id=#{id}")
     List<Long> getStoryByCollector(@Param("id") long id);
 
+    @Select("select * from writo.story where father_id=#{id}")
+    List<Story> getStoryByFather(@Param("id") long id);
+
     @Select("select * from writo.story where valid is true")
     List<Story> all();
 

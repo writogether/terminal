@@ -83,12 +83,7 @@ public class StoryController extends Base {
     @WellTested
     public Res getAllStory() {
         List<Story> stories = core.mapper().story().all();
-        List<StoryView> storyViews = new ArrayList<>();
-        for (Story s : stories) {
-            StoryView sv=(StoryView) s.toView(StoryView.class);
-            sv.setUserName(core.mapper().user().getUserById(sv.getAuthorId()).getUsername());
-            storyViews.add(sv);
-        }
+        List<StoryView> storyViews=setUserName(stories);
         storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
         return Res.ok(storyViews);
     }
@@ -109,6 +104,14 @@ public class StoryController extends Base {
         return Res.ok(s);
     }
 
+    @GetMapping("/by-father")
+    public Res getStoryByFather(@RequestParam long fatherId) {
+        List<Story> stories = core.mapper().story().getStoryByFather(fatherId);
+        List<StoryView> storyViews=setUserName(stories);
+        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
+        return Res.ok(storyViews);
+    }
+
     /**
      * Get story by type.
      */
@@ -116,10 +119,8 @@ public class StoryController extends Base {
     @WellTested
     public Res getStoryByTag(@RequestParam TagType tag) {
         List<Story> stories = core.mapper().story().getStoryByType(tag);
-        List<View> storyViews = new ArrayList<>();
-        for (Story story : stories) {
-            storyViews.add(story.toView(StoryView.class));
-        }
+        List<StoryView> storyViews=setUserName(stories);
+        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
         return Res.ok(storyViews);
     }
 
@@ -146,6 +147,17 @@ public class StoryController extends Base {
         List<Story> stories = mapper().story().getStoryByAuthor(id);
         List<StoryView> storyViews = stories.stream().filter(story -> !story.isOpen()).map(story -> (StoryView) story.toView(StoryView.class)).collect(Collectors.toList());
         return Res.ok(storyViews);
+    }
+
+
+    List<StoryView> setUserName(List<Story> stories){
+        List<StoryView> storyViews=new ArrayList<>();
+        for(Story s:stories){
+            StoryView sv=(StoryView)s.toView(StoryView.class);
+            sv.setUserName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
+            storyViews.add(sv);
+        }
+        return storyViews;
     }
 
 }
