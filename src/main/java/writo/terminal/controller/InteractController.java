@@ -77,6 +77,17 @@ public class InteractController extends Base {
         return Res.ok().setMessage("Evaluate Successfully!");
     }
 
+    @GetMapping("/getEvaluation")
+    public Res getEval(@RequestParam Long storyId,HttpServletRequest request){
+        Res isLogin = core.service().auth().authenticate(request);
+        if (!isLogin.getSuccess()) return isLogin;
+        long userId = (Long) isLogin.getData();
+        Eval eval=core.mapper().eval().getEval(storyId, userId);
+        if (eval==null)return Res.ok(false);
+
+        return Res.ok(core.mapper().eval().getEval(storyId, userId));
+    }
+
     /**
      * Collect a story.
      */
@@ -98,6 +109,15 @@ public class InteractController extends Base {
             core.mapper().story().updatePopularity(-collectPop, storyId);
             return Res.ok().setMessage("Cancel Collect Successfully!");
         }
+    }
+
+    @GetMapping("checkIfCollected")
+    public Res checkIfCollected(@RequestParam long storyId, HttpServletRequest request){
+        Res isLogin = core.service().auth().authenticate(request);
+        if (!isLogin.getSuccess()) return isLogin;
+        long id = (Long) isLogin.getData();
+        boolean collected = mapper().collect().select(id, storyId)!=null;
+        return Res.ok(collected);
     }
 
     /**
