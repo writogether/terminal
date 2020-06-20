@@ -19,5 +19,7 @@ public class StoryView implements View<Story> {
     private Boolean open;
     private Integer popularity;
     private Integer depth;
+    private String rootTitle;
+    private String description;
 
 }

@@ -10,8 +10,8 @@ public interface TreeMapper {
     @Options(useGeneratedKeys = true, keyProperty = "tree.id", keyColumn = "id")
     void insert(@Param("tree") Tree tree);
 
-    @Update("update writo.tree set s_exp=#{sExp} where id=#{id} ")
-    void update(@Param("id") long id, @Param("sExp") String sExp);
+    @Update("update writo.tree set s_exp=#{tree.sExp} where id=#{tree.id} ")
+    void update(@Param("tree") Tree tree);
 
     @Select("select * from writo.tree where id=#{id}")
     Tree select(@Param("id") long id);

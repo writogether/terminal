@@ -40,21 +40,24 @@ commit;
 drop table if exists `story`;
 create table `story`
 (
-    `id`         int(20)       not null auto_increment,
-    `father_id`  int(20)       not null default 0,
-    `author_id`  int(20)       not null default 1,
-    `title`      varchar(255)  not null default 'none',
-    `tag`        varchar(255)  not null default 'Other',
-    `valid`      boolean       not null default true,
-    `open`       boolean       not null default true,
-    `popularity` int(20)       not null default 0,
-    `depth`      int(20)       not null default 0,
-    `tree_id`    int(20)       not null default 0,
-    `path`       varchar(1024) not null default 0,
+    `id`          int(20)       not null auto_increment,
+    `father_id`   int(20)       not null default 0,
+    `author_id`   int(20)       not null default 1,
+    `title`       varchar(255)  not null default '',
+    `tag`         varchar(255)  not null default 'Other',
+    `valid`       boolean       not null default true,
+    `open`        boolean       not null default true,
+    `popularity`  int(20)       not null default 0,
+    `depth`       int(20)       not null default 0,
+    `tree_id`     int(20)       not null default 0,
+    `path`        varchar(1024) not null default '',
+    `root_title`  varchar(255)  not null default '',
+    `description` varchar(1024) not null default '',
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story` values ();
+insert into `story` (father_id, author_id, title, tag, valid, open, popularity, depth, tree_id, path)
+values (-1, 1, 'hello', 'Other', true, true, 0, 0, 1, 1);
 commit;
 --
 
@@ -67,7 +70,8 @@ create table `story_content`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story_content` values (1,'story');
+insert into `story_content`
+values (1, 'story');
 commit;
 --
 
@@ -116,12 +120,12 @@ commit;
 drop table if exists `tree`;
 create table `tree`
 (
-    `id`   int(20)       not null auto_increment,
+    `id`    int(20)       not null auto_increment,
     `s_exp` varchar(8196) not null default '',
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `tree`
-values ();
+insert into `tree` (s_exp)
+values ('(1)');
 commit;
 --

@@ -23,7 +23,7 @@ public interface StoryMapper {
 
     @Update("update writo.story set father_id=#{story.fatherId}, author_id=#{story.authorId}, title=#{story.title} ," +
             "tag=#{story.tag}, valid=#{story.valid}, open=#{story.open} ,popularity=#{story.popularity} ," +
-            "depth=#{story.depth}, tree_id=#{story.treeId} ,path=#{story.path} where id=#{story.id} ")
+            "depth=#{story.depth}, tree_id=#{story.treeId} ,path=#{story.path}, description=#{story.description} where id=#{story.id} ")
     void update(@Param("story") Story story);
 
     @Update("update writo.story_content set content=#{content} where id=#{id}")

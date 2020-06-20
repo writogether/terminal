@@ -18,6 +18,8 @@ public class Story implements Entity {
     private long treeId;
     private int depth;
     private String path;
+    private String rootTitle;
+    private String description;
 
     public Story() {
         authorId = -1;
@@ -28,6 +30,8 @@ public class Story implements Entity {
         popularity = 0;
         depth = -1;
         treeId = -1;
+        rootTitle = "";
+        description = "";
     }
 
 }
