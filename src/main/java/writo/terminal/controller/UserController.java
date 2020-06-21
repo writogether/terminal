@@ -26,7 +26,7 @@ public class UserController extends Base {
      * Get user info by id.
      */
     @WellTested
-    @GetMapping("search/{id}")
+    @GetMapping("/search/{id}")
     public Res search(@PathVariable long id) {
         User user = mapper().user().getUserById(id);
         return Res.ok(user.toView(UserView.class));
