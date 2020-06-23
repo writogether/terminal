@@ -43,6 +43,7 @@ create table `story`
     `id`          int(20)       not null auto_increment,
     `father_id`   int(20)       not null default 0,
     `author_id`   int(20)       not null default 1,
+    `author_name` varchar(255)  not null default '',
     `title`       varchar(255)  not null default '',
     `tag`         varchar(255)  not null default 'Other',
     `valid`       boolean       not null default true,
@@ -56,8 +57,9 @@ create table `story`
     primary key (`id`)
 ) engine = InnoDB
   default charset = utf8mb4;
-insert into `story` (father_id, author_id, title, tag, valid, open, popularity, depth, tree_id, path)
-values (-1, 1, 'hello', 'Other', true, true, 0, 0, 1, 1);
+insert into `story` (father_id, author_id, title, tag, valid, open, popularity, depth, tree_id, path, root_title,
+                     description)
+values (-1, 1, 'hello', 'Other', true, true, 0, 0, 1, 1, 'hello', '');
 commit;
 --
 

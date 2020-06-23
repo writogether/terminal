@@ -11,7 +11,6 @@ import writo.terminal.util.WellTested;
 import writo.terminal.view.StoryView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +31,7 @@ public class StoryController extends Base {
         Story father = mapper().story().getStoryById(storyView.getFatherId());
         Story story = storyView.toEntity();
         story.setAuthorId((Long) isLogin.getData());
+        story.setAuthorName(mapper().user().getUserById(story.getAuthorId()).getUsername());
 
         mapper().story().insert(story);
 
@@ -42,6 +42,7 @@ public class StoryController extends Base {
 
             story.setPath("" + story.getId());
             story.setTreeId(tree.getId());
+            story.setRootTitle(story.getTitle());
             story.setDepth(0);
         } else {
             Tree tree = mapper().tree().select(father.getTreeId());
@@ -50,7 +51,10 @@ public class StoryController extends Base {
             tree.setSExp(structTree.serialize());
             mapper().tree().update(tree);
 
-            story.setPath(father.getPath() + "," + story.getId());
+            story.setPath(father.getPath());
+            Story root = mapper().story().getStoryById(Long.parseLong(story.getPath().split(",", 1)[0]));
+            story.setPath(story.getPath() + "," + story.getId());
+            story.setRootTitle(root.getTitle());
             story.setTreeId(father.getTreeId());
             story.setDepth(father.getDepth() + 1);
         }
@@ -83,10 +87,10 @@ public class StoryController extends Base {
     @GetMapping("/all-story")
     @WellTested
     public Res getAllStory() {
-        List<Story> stories = core.mapper().story().all();
-        List<StoryView> storyViews = setUserName(stories);
-        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
-        return Res.ok(storyViews);
+        return Res.ok(mapper().story().all().stream()
+                .map(o -> (StoryView) o.toView(StoryView.class))
+                .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -101,28 +105,8 @@ public class StoryController extends Base {
     @GetMapping("/storyInfo/{id}")
     public Res getStoryById(@PathVariable long id) {
         StoryView s = (StoryView) (core.mapper().story().getStoryById(id)).toView(StoryView.class);
-        s.setUserName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
+        s.setAuthorName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
         return Res.ok(s);
-    }
-
-    @GetMapping("/by-father")
-    public Res getStoryByFather(@RequestParam long fatherId) {
-        List<Story> stories = core.mapper().story().getStoryByFather(fatherId);
-        List<StoryView> storyViews = setUserName(stories);
-        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
-        return Res.ok(storyViews);
-    }
-
-    /**
-     * Get story by type.
-     */
-    @GetMapping("/by-tag")
-    @WellTested
-    public Res getStoryByTag(@RequestParam TagType tag) {
-        List<Story> stories = core.mapper().story().getStoryByType(tag);
-        List<StoryView> storyViews = setUserName(stories);
-        storyViews.sort((v1, v2) -> v2.getPopularity() - v1.getPopularity());
-        return Res.ok(storyViews);
     }
 
     /**
@@ -135,6 +119,26 @@ public class StoryController extends Base {
         List<Story> stories = core.mapper().story().getStoryByAuthor(author.getId());
         List<StoryView> storyViews = stories.stream().takeWhile(Story::isOpen).map(story -> (StoryView) story.toView(StoryView.class)).collect(Collectors.toList());
         return Res.ok(storyViews);
+    }
+
+    @GetMapping("/by-father")
+    public Res getStoryByFather(@RequestParam long fatherId) {
+        return Res.ok(mapper().story().getStoryByFather(fatherId).stream()
+                .map(o -> (StoryView) o.toView(StoryView.class))
+                .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Get story by type.
+     */
+    @GetMapping("/by-tag")
+    @WellTested
+    public Res getStoryByTag(@RequestParam TagType tag) {
+        return Res.ok(mapper().story().getStoryByType(tag).stream()
+                .map(o -> (StoryView) o.toView(StoryView.class))
+                .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -150,23 +154,13 @@ public class StoryController extends Base {
         return Res.ok(storyViews);
     }
 
-    List<StoryView> setUserName(List<Story> stories) {
-        List<StoryView> storyViews = new ArrayList<>();
-        for (Story s : stories) {
-            StoryView sv = (StoryView) s.toView(StoryView.class);
-            sv.setUserName(core.mapper().user().getUserById(s.getAuthorId()).getUsername());
-            storyViews.add(sv);
-        }
-        return storyViews;
-    }
-
     @GetMapping("/history")
-    List<StoryView> getHistory(@RequestParam long id) {
-        return Arrays.stream(mapper().story().getStoryById(id).getPath().split(","))
+    public Res getHistory(@RequestParam long id) {
+        return Res.ok(Arrays.stream(mapper().story().getStoryById(id).getPath().split(","))
                 .map(Long::parseLong)
                 .map(d -> mapper().story().getStoryById(d))
                 .map(e -> (StoryView) e.toView(StoryView.class))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
 }

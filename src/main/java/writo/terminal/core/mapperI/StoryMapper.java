@@ -2,7 +2,6 @@ package writo.terminal.core.mapperI;
 
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
-import writo.terminal.data.Comment;
 import writo.terminal.data.Story;
 import writo.terminal.data.StoryContent;
 import writo.terminal.type.TagType;
@@ -13,17 +12,19 @@ import java.util.List;
 @Component
 public interface StoryMapper {
 
-    @Update("insert into writo.story_content (content) values(#{content})")
+    @Insert("insert into writo.story_content (content) values(#{content})")
     void uploadStoryContent(@Param("content") String content);
 
-    @Update("insert into writo.story (author_id,title,father_id,tag,depth) values " +
-            "(#{story.authorId} ,#{story.title} ,#{story.fatherId} ,#{story.tag},#{story.fatherId}  ) ")
+    @Insert("insert into writo.story (father_id, author_id, author_name, title, tag, valid, open, popularity, depth, tree_id, path, root_title, description) values " +
+            "(#{story.fatherId}  ,#{story.authorId} ,#{story.authorName} ,#{story.title} ,#{story.tag} ,#{story.valid} ,#{story.open} ," +
+            "#{story.popularity} ,#{story.depth} ,#{story.treeId} ,#{story.path} ,#{story.rootTitle} ,#{story.description}   ) ")
     @Options(useGeneratedKeys = true, keyProperty = "story.id", keyColumn = "id")
     void insert(@Param("story") Story story);
 
-    @Update("update writo.story set father_id=#{story.fatherId}, author_id=#{story.authorId}, title=#{story.title} ," +
+    @Update("update writo.story set father_id=#{story.fatherId}, author_id=#{story.authorId}, author_name=#{story.authorName}, title=#{story.title} ," +
             "tag=#{story.tag}, valid=#{story.valid}, open=#{story.open} ,popularity=#{story.popularity} ," +
-            "depth=#{story.depth}, tree_id=#{story.treeId} ,path=#{story.path}, description=#{story.description} where id=#{story.id} ")
+            "depth=#{story.depth}, tree_id=#{story.treeId} ,path=#{story.path} ,root_title=#{story.rootTitle}, description=#{story.description} " +
+            "where id=#{story.id} ")
     void update(@Param("story") Story story);
 
     @Update("update writo.story_content set content=#{content} where id=#{id}")

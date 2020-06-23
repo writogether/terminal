@@ -11,7 +11,7 @@ public class StoryView implements View<Story> {
     private Long id;
     private Long fatherId;
     private Long authorId;
-    private String userName;
+    private String authorName;
     private String title;
     private String content;
     private TagType tag;

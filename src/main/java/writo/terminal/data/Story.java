@@ -11,6 +11,7 @@ public class Story implements Entity {
     private long fatherId;
     private long authorId;
     private String title;
+    private String authorName;
     private TagType tag;
     private boolean valid;
     private boolean open;
@@ -32,6 +33,7 @@ public class Story implements Entity {
         treeId = -1;
         rootTitle = "";
         description = "";
+        path = "";
     }
 
 }
