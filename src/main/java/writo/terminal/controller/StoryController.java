@@ -52,7 +52,7 @@ public class StoryController extends Base {
             mapper().tree().update(tree);
 
             story.setPath(father.getPath());
-            Story root = mapper().story().getStoryById(Long.parseLong(story.getPath().split(",", 1)[0]));
+            Story root = mapper().story().getStoryById(Long.parseLong(story.getPath().split(",", 2)[0]));
             story.setPath(story.getPath() + "," + story.getId());
             story.setRootTitle(root.getTitle());
             story.setTreeId(father.getTreeId());
