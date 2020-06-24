@@ -88,6 +88,7 @@ public class StoryController extends Base {
     @WellTested
     public Res getAllStory() {
         return Res.ok(mapper().story().all().stream()
+                .filter(Story::isOpen)
                 .map(o -> (StoryView) o.toView(StoryView.class))
                 .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
                 .collect(Collectors.toList()));
@@ -117,13 +118,17 @@ public class StoryController extends Base {
     public Res getStoryByUsername(@RequestParam String username) {
         User author = core.mapper().user().getUserByName(username);
         List<Story> stories = core.mapper().story().getStoryByAuthor(author.getId());
-        List<StoryView> storyViews = stories.stream().takeWhile(Story::isOpen).map(story -> (StoryView) story.toView(StoryView.class)).collect(Collectors.toList());
+        List<StoryView> storyViews = stories.stream()
+                .filter(Story::isOpen)
+                .map(story -> (StoryView) story.toView(StoryView.class))
+                .collect(Collectors.toList());
         return Res.ok(storyViews);
     }
 
     @GetMapping("/by-father")
     public Res getStoryByFather(@RequestParam long fatherId) {
         return Res.ok(mapper().story().getStoryByFather(fatherId).stream()
+                .filter(Story::isOpen)
                 .map(o -> (StoryView) o.toView(StoryView.class))
                 .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
                 .collect(Collectors.toList()));
@@ -136,6 +141,7 @@ public class StoryController extends Base {
     @WellTested
     public Res getStoryByTag(@RequestParam TagType tag) {
         return Res.ok(mapper().story().getStoryByType(tag).stream()
+                .filter(Story::isOpen)
                 .map(o -> (StoryView) o.toView(StoryView.class))
                 .sorted((v1, v2) -> v2.getPopularity() - v1.getPopularity())
                 .collect(Collectors.toList()));

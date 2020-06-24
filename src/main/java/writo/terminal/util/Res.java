@@ -6,7 +6,7 @@ import lombok.Data;
 public class Res {
 
     private Boolean success = true;
-    private String message = "Too lazy to write message";
+    private String message = "";
     private Object data = null;
 
     private Res() {}

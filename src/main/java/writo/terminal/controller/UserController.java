@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/user")
 public class UserController extends Base {
 
-//    private final UserMapper userMapper = mapper().user();
-//    private final AuthI auth = service().getAuth();
-
     /**
      * Get user info by id.
      */
@@ -42,7 +39,7 @@ public class UserController extends Base {
     public Res register(@RequestBody RegisterView registerView) {
         if (null != mapper().user().getUserByPhoneNumber(registerView.getPhoneNumber())
                 || null != mapper().user().getUserByName(registerView.getUsername())) {
-            return Res.oops().setMessage("user already existed.");
+            return Res.oops().setMessage("username or phone number existed!");
         }
         mapper().user().register(registerView);
         return Res.ok().setMessage("Register successfully!");
@@ -95,9 +92,18 @@ public class UserController extends Base {
     public Res updateUserInfo(@RequestBody UserView userView) {
         long id = userView.getId();
         User user = mapper().user().getUserById(id);
-        BeanUtil.copyProperties(userView, user, CopyOptions.create().ignoreNullValue());
+        if (!(null == userView.getUsername() || userView.getUsername().equals(user.getUsername()))) {
+            if (exists(userView)) return Res.oops().setMessage("username or phone number existed!");
+        }
+        else BeanUtil.copyProperties(userView, user, CopyOptions.create().ignoreNullValue());
         mapper().user().updateById(user);
         return Res.ok().setMessage("Information modified successfully!");
+    }
+
+    private boolean exists(UserView userView) {
+        return mapper().user().getUserByName(userView.getUsername()) != null
+                || mapper().user().getUserByPhoneNumber(userView.getPhoneNumber()) != null;
+
     }
 
 }
