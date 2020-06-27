@@ -63,4 +63,7 @@ public interface StoryMapper {
     @Select("select depth from writo.story where id=#{storyId}")
     int getDepthOfStory(@Param("storyId") long storyId);
 
+    @Update("update writo.story set popularity=popularity-ceil(popularity/10) where popularity>0")
+    void coolDown();
+
 }
