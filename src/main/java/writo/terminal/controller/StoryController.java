@@ -103,6 +103,9 @@ public class StoryController extends Base {
         return Res.ok(core.mapper().story().getStoryContentById(id));
     }
 
+    /**
+     * Return info of given story.
+     */
     @GetMapping("/storyInfo/{id}")
     public Res getStoryById(@PathVariable long id) {
         StoryView s = (StoryView) (core.mapper().story().getStoryById(id)).toView(StoryView.class);
@@ -125,6 +128,9 @@ public class StoryController extends Base {
         return Res.ok(storyViews);
     }
 
+    /**
+     * Show all successors of given story.
+     */
     @GetMapping("/by-father")
     public Res getStoryByFather(@RequestParam long fatherId) {
         return Res.ok(mapper().story().getStoryByFather(fatherId).stream()
@@ -160,6 +166,9 @@ public class StoryController extends Base {
         return Res.ok(storyViews);
     }
 
+    /**
+     * Full history from recreate tree's root to current story.
+     */
     @GetMapping("/history")
     public Res getHistory(@RequestParam long id) {
         return Res.ok(Arrays.stream(mapper().story().getStoryById(id).getPath().split(","))

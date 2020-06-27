@@ -5,6 +5,9 @@ import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 import writo.terminal.core.mapperI.*;
 
+/**
+ * Mapper aggregate, contains object relational mapping for tables.
+ */
 @Component
 @Getter
 @Accessors(fluent = true)

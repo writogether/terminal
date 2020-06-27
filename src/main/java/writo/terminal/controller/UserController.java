@@ -100,6 +100,9 @@ public class UserController extends Base {
         return Res.ok().setMessage("Information modified successfully!");
     }
 
+    /**
+     * Judge whether a username or phone number already used.
+     */
     private boolean exists(UserView userView) {
         return mapper().user().getUserByName(userView.getUsername()) != null
                 || mapper().user().getUserByPhoneNumber(userView.getPhoneNumber()) != null;

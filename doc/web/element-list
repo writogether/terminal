@@ -1,0 +1,12 @@
+writo.terminal
+writo.terminal.config
+writo.terminal.contract
+writo.terminal.controller
+writo.terminal.core
+writo.terminal.core.mapperI
+writo.terminal.core.ServiceI
+writo.terminal.data
+writo.terminal.service
+writo.terminal.type
+writo.terminal.util
+writo.terminal.view

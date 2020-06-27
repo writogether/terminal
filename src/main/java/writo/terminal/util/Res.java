@@ -2,6 +2,9 @@ package writo.terminal.util;
 
 import lombok.Data;
 
+/**
+ * Boxing type for BE and FE communication.
+ */
 @Data
 public class Res {
 

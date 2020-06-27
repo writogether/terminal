@@ -43,6 +43,9 @@ public class InteractController extends Base {
         return Res.ok().setMessage("Comment Successfully!");
     }
 
+    /**
+     * List all comments for given story.
+     */
     @GetMapping("/getComment")
     @WellTested
     public Res getComment(@RequestParam long storyId) {
@@ -77,6 +80,9 @@ public class InteractController extends Base {
         return Res.ok().setMessage("Evaluate Successfully!");
     }
 
+    /**
+     * Return current user's evaluation for given story.
+     */
     @GetMapping("/getEvaluation")
     public Res getEval(@RequestParam Long storyId,HttpServletRequest request){
         Res isLogin = core.service().auth().authenticate(request);
@@ -111,6 +117,9 @@ public class InteractController extends Base {
         }
     }
 
+    /**
+     * Check whether a story has been collected by user or not.
+     */
     @GetMapping("checkIfCollected")
     public Res checkIfCollected(@RequestParam long storyId, HttpServletRequest request){
         Res isLogin = core.service().auth().authenticate(request);
