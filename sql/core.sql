@@ -59,13 +59,7 @@ create table `story`
   default charset = utf8mb4;
 insert into `story`
 (father_id, author_id, popularity, depth, tree_id, valid, open, author_name, title, root_title, tag, path, description)
-values (-1, 1, 0, 0, 1, true, false, 'userA', 'hello', 'hello', 'Other', '1', '早上好');
-insert into `story`
-(father_id, author_id, popularity, depth, tree_id, valid, open, author_name, title, root_title, tag, path, description)
 values (-1, 1, 0, 0, 1, true, true, 'userA', 'hello', 'hello', 'Other', '1', '早上好');
-insert into `story`
-(father_id, author_id, popularity, depth, tree_id, valid, open, author_name, title, root_title, tag, path, description)
-values (-1, 2, 0, 0, 1, true, true, 'userA', 'hello', 'hello', 'Other', '1', '早上好');
 
 commit;
 --
