@@ -160,7 +160,8 @@ public class StoryController extends Base {
     public Res getPrivate(HttpServletRequest request) {
         Res isLogin = core.service().auth().authenticate(request);
         if (!isLogin.getSuccess()) return isLogin;
-        int id = (int) isLogin.getData();
+        Number num = (Number) isLogin.getData();
+        int id =  num.intValue();
         List<Story> stories = mapper().story().getStoryByAuthor(id);
         List<StoryView> storyViews = stories.stream().filter(story -> !story.isOpen()).map(story -> (StoryView) story.toView(StoryView.class)).collect(Collectors.toList());
         return Res.ok(storyViews);
