@@ -92,10 +92,10 @@ public class UserController extends Base {
     public Res updateUserInfo(@RequestBody UserView userView) {
         long id = userView.getId();
         User user = mapper().user().getUserById(id);
-        if (!(null == userView.getUsername() || userView.getUsername().equals(user.getUsername()))) {
-            if (exists(userView)) return Res.oops().setMessage("username or phone number existed!");
-        }
-        else BeanUtil.copyProperties(userView, user, CopyOptions.create().ignoreNullValue());
+//        if (!(null == userView.getUsername() || userView.getUsername().equals(user.getUsername()))) {
+//            if (exists(userView)) return Res.oops().setMessage("username or phone number existed!");
+//        } else
+        BeanUtil.copyProperties(userView, user, CopyOptions.create().ignoreNullValue());
         mapper().user().updateById(user);
         return Res.ok().setMessage("Information modified successfully!");
     }
