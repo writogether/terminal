@@ -59,7 +59,7 @@ create table `story`
   default charset = utf8mb4;
 insert into `story`
 (father_id, author_id, popularity, depth, tree_id, valid, open, author_name, title, root_title, tag, path, description)
-values (-1, 1, 0, 0, 1, true, true, 'userA', 'hello', 'hello', 'Other', '1', '早上好');
+values (-1, 1, 0, 0, 1, true, true, 'userA', '你好', '你好', 'Other', '1', '这是一个栗子');
 
 commit;
 --
@@ -74,7 +74,7 @@ create table `story_content`
 ) engine = InnoDB
   default charset = utf8mb4;
 insert into `story_content`
-values (1, 'story');
+values (1, '栗子');
 commit;
 --
 
